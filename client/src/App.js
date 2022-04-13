@@ -79,7 +79,14 @@ function App() {
       />
       <button onClick={addToList}>Add</button>
 
-      
+      <h1>Gateways List</h1>
+      {gatewaysList.map((val, key) => {
+        return (
+        <div key={key}>
+            <h1> {val.name} </h1>
+            <h1> {val.serialNumber} </h1>                      
+        </div>);
+      })};
     </div>
   );
 }
