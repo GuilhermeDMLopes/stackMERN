@@ -30,6 +30,7 @@ function App() {
   const [registered_Users, setRegisteredUsers] = useState("");
   const [ipv4, setIpv4] = useState("");
   const [gatewaysList, setGatewaysList] = useState([]);
+  const [newGatewayName, setNewGatewayName] = useState("");
 
   useEffect(() => {
     Axios.get("http://localhost:3001/read").then((response) => {
@@ -38,12 +39,24 @@ function App() {
   }, [])
 
   const addToList = () => {
-    Axios.post("http://localhost:3001/insert", {
+    /*Axios.post("http://localhost:3001/insert", {
       name: gatewaysName,
       serialNumber: serial_Number, 
       registeredUsers: registered_Users, 
       ipV4: ipv4
+    });*/
+    console.log(gatewaysName+serial_Number+registered_Users+ipv4)
+  }
+
+  const updateName = (id) => {
+    Axios.put("http://localhost:3001/update", {
+      id: id,
+      name: newGatewayName       
     });
+  }
+
+  const deleteId = (id) => {
+    Axios.delete(`http://localhost:3001/delete/${id}`)      
   }
 
   return (
@@ -82,9 +95,18 @@ function App() {
       <h1>Gateways List</h1>
       {gatewaysList.map((val, key) => {
         return (
-        <div key={key}>
+        <div key={key} className="gateways">
             <h1> {val.name} </h1>
-            <h1> {val.serialNumber} </h1>                      
+            <h1> {val.serialNumber} </h1>            
+            <input 
+              type="text"
+              placeholder="New Gateway name..." 
+              onChange={(event) => {
+              setNewGatewayName(event.target.value)
+              }}
+            />
+            <button onClick={() => updateName(val._id)}>Update</button>
+            <button onClick={() => deleteId(val._id)}>Delete</button>                      
         </div>);
       })};
     </div>

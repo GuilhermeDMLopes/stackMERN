@@ -50,6 +50,29 @@ app.get('/read', async(req,res) => {
     })      
 });
 
+//UPDATE
+app.put('/update', async(req,res) => {
+    const newGatewayName = req.body.newGatewayName
+    const id = req.body.id
+
+    try {
+        await GatewaysModel.findById(id, (err, updatedNameGateway) => {
+        updatedNameGateway.name = newGatewayName;
+        updatedNameGateway.save();
+        res.send("update");
+    })
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+//DELETE
+app.delete('/delete/:id', async(req,res) => {
+    const id = req.body.id;
+    await GatewaysModel.findByIdAndRemove(id).exec();
+    res.send("deleted");
+});
+
 app.listen(3001, () => {
     console.log("Server running on port 3001");
 });
